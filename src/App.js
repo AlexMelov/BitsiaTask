@@ -1,11 +1,18 @@
-import logo from "./logo.svg";
-import "./App.css";
+import { useContext } from "react";
+import classes from "./App.module.scss";
+import GeneralData from "./Components/Layout/GeneralData";
+import InvoiceEditor from "./Components/Layout/InvoiceEditor";
+import AuthContext from "./store/invoice-context";
 
 function App() {
+  const ctx = useContext(AuthContext);
   return (
-    <div className="App">
-      <div>Test1</div>
-    </div>
+    <>
+      <main className={classes.App}>
+        {!ctx.isLoggedIn && <InvoiceEditor />}
+        <GeneralData />
+      </main>
+    </>
   );
 }
 
