@@ -1,0 +1,8 @@
+.generalData {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  & input,
+  & label {
+    margin: 1rem 0;
+  }
+}

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import AuthContext from "../../store/invoice-context";
 import InvoiceItem from "../UI/InvoiceItem";
 import classes from "./invoiceEditor.module.scss";
+
 const DUMMY_ARR = [
   { id: 0, name: "Invoice1", price: 29.55 },
   { id: 1, name: "Invoice2", price: 39.55 },
@@ -11,11 +12,7 @@ const InvoiceEditor = (props) => {
   const [invoices, setInvoices] = useState(DUMMY_ARR);
 
   const deleteHandler = (id) => {
-    const filtered = invoices.filter((item) => {
-      if (item.id !== id) {
-        return item;
-      }
-    });
+    const filtered = invoices.filter((item) => (item.id !== id ? item : null));
     setInvoices([...filtered]);
   };
   const ctx = useContext(AuthContext);
