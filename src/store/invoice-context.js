@@ -4,6 +4,7 @@ const AuthContext = React.createContext({
   invoiceArr: [],
   onSave: (name, desc, quant, price, id) => {},
   sendData: () => {},
+  filteredArr: () => {},
 });
 export const AuthContextProvider = (props) => {
   const [newName, setNewName] = useState("");
@@ -30,8 +31,13 @@ export const AuthContextProvider = (props) => {
       quant: newQuant,
       price: newPrice,
       id: newId,
+      sum: (newQuant * newPrice) / 100,
     };
     setInvoiceArr([...invoiceArr, data]);
+  };
+
+  const filterArrHandler = (arr) => {
+    setInvoiceArr(arr);
   };
   return (
     <AuthContext.Provider
@@ -39,6 +45,7 @@ export const AuthContextProvider = (props) => {
         invoiceArr: invoiceArr,
         onSave: saveInvoiceHandler,
         sendData: sendDataHandler,
+        filteredArr: filterArrHandler,
       }}
     >
       {props.children}

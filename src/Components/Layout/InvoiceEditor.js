@@ -9,11 +9,11 @@ const InvoiceEditor = (props) => {
 
   const deleteHandler = (id) => {
     const filtered = arr.filter((item) => (+item.id !== +id ? item : null));
-    ctx.invoiceArr = filtered;
+    ctx.filteredArr(filtered);
   };
 
   const reducedNet = ctx.invoiceArr.reduce((prev, next) => {
-    return +prev + +next.price;
+    return +prev + +next.sum;
   }, 0);
 
   const atSt = (reducedNet * 19) / 100;
