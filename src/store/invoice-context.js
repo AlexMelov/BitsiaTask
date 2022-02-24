@@ -1,27 +1,44 @@
 import React, { useState } from "react";
 
 const AuthContext = React.createContext({
-  isLoggedIn: false,
-  onLogout: () => {},
-  onLogin: (email, password) => {},
+  invoiceArr: [],
+  onSave: (name, desc, quant, price) => {},
+  sendData: () => {},
 });
 
 export const AuthContextProvider = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [newQuant, setNewQuant] = useState("");
+  const [newPrice, setNewPrice] = useState("");
+  const [newId, setNewId] = useState("");
+  const [invoiceArr, setInvoiceArr] = useState([]);
 
-  const loginHandler = () => {
-    setIsLoggedIn(false);
+  const saveInvoiceHandler = (name, desc, quant, price, id) => {
+    setNewName(name);
+    setNewDesc(desc);
+    setNewQuant(quant);
+    setNewPrice(price);
+    setNewId(id);
   };
-  const logoutHandler = () => {
-    console.log("On  logout handler");
+  const sendDataHandler = () => {
+    const data = {
+      name: newName,
+      desc: newDesc,
+      quant: newQuant,
+      price: newPrice,
+      id: newId,
+    };
+    setInvoiceArr([...invoiceArr, data]);
+    console.log(invoiceArr);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn: isLoggedIn,
-        onLogout: logoutHandler,
-        onLogin: loginHandler,
+        invoiceArr: invoiceArr,
+        onSave: saveInvoiceHandler,
+        sendData: sendDataHandler,
       }}
     >
       {props.children}

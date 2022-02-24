@@ -1,46 +1,41 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import AuthContext from "../../store/invoice-context";
 import InvoiceItem from "../UI/InvoiceItem";
 import classes from "./invoiceEditor.module.scss";
 
-const DUMMY_ARR = [
-  { id: 0, name: "Invoice1", price: 29.55 },
-  { id: 1, name: "Invoice2", price: 39.55 },
-  { id: 2, name: "Invoice3", price: 569.55 },
-];
 const InvoiceEditor = (props) => {
-  const [invoices, setInvoices] = useState(DUMMY_ARR);
+  const ctx = useContext(AuthContext);
+  let arr = ctx.invoiceArr;
+  console.log(arr);
 
   const deleteHandler = (id) => {
-    const filtered = invoices.filter((item) => (item.id !== id ? item : null));
-    setInvoices([...filtered]);
+    const filtered = arr.filter((item) =>
+      +item.id !== +id ? console.log(id) : null
+    );
+    console.log(filtered);
   };
-  const ctx = useContext(AuthContext);
 
-  const reducedNet = invoices.reduce((prev, next) => {
-    return prev + next.price;
+  const reducedNet = ctx.invoiceArr.reduce((prev, next) => {
+    return +prev + +next.price;
   }, 0);
 
-  const atSt = ((reducedNet * 19) / 100).toFixed(2);
-  const gross = (+reducedNet + +atSt).toFixed(2);
+  const atSt = (reducedNet * 19) / 100;
+  const gross = +reducedNet + +atSt;
 
   return (
     <div className={classes.container}>
-      {!ctx.isLoggedIn && <h4>InvoiceEditor</h4>}
+      <h4>InvoiceEditor</h4>
       <h5>Invoices</h5>
-      {invoices &&
-        invoices.map(({ id, name, price }) => (
-          <InvoiceItem
-            key={id}
-            id={id}
-            name={name}
-            price={price}
-            deleteHandler={() => deleteHandler(id)}
-          />
-        ))}
-      <button className={classes.container__addBtn} onClick={ctx.onLogout}>
-        +
-      </button>
+      {ctx.invoiceArr.map(({ name, price }, idx) => (
+        <InvoiceItem
+          key={idx}
+          id={idx}
+          name={name}
+          price={price}
+          deleteHandler={() => deleteHandler(idx)}
+        />
+      ))}
+      <button className={classes.container__addBtn}>+</button>
       <div className={classes.allNet}>
         <div>
           <p>Net</p>
@@ -48,7 +43,7 @@ const InvoiceEditor = (props) => {
           <p>Gross</p>
         </div>
         <div>
-          <p>{reducedNet.toFixed(2)}</p>
+          <p>{reducedNet}</p>
           <p>{atSt}</p>
           <p>{gross}</p>
         </div>

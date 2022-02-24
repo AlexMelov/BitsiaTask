@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import AuthContext from "../../store/invoice-context";
+import InvoiceLine from "../UI/InvoiceLine";
 import classes from "./GeneralData.module.scss";
 
 const GeneralData = () => {
+  const [count, setCount] = useState([]);
+  const [num, setNum] = useState(0);
+
   const addItemHandler = () => {
-    console.log("Adding Item");
+    setNum(num + 1);
+    setCount([...count, num]);
   };
   const submitHandler = (e) => {
     e.preventDefault();
   };
+
+  const removeHandler = (e) => {
+    e.target.parentElement.parentElement.remove();
+  };
+
+  const ctx = useContext(AuthContext);
+
   return (
     <form onSubmit={submitHandler}>
       <h3>General Data</h3>
@@ -37,9 +50,36 @@ const GeneralData = () => {
         <input id="name2" />
       </div>
       <h2>Invoice Lines</h2>
-      <div className={classes.generalData}>
-        <button onClick={addItemHandler}>+</button>
+      <div className={classes.linesContainer}>
+        <table className={classes.tableDiv}>
+          {count.length > 0 && (
+            <thead>
+              <tr>
+                <td>Pos.</td>
+                <td>Name.</td>
+                <td>Description</td>
+                <td>Quantity</td>
+                <td>Unit Price</td>
+                <td>Sum</td>
+                <td></td>
+              </tr>
+            </thead>
+          )}
+          {count.map((item, idx) => (
+            <InvoiceLine
+              key={idx}
+              id={idx}
+              tableDiv={classes.tableDiv}
+              removeHandler={removeHandler}
+              onSave={ctx.onSave}
+            />
+          ))}
+        </table>
       </div>
+      <button onClick={addItemHandler}>+</button>
+      <button type="submit" onClick={ctx.sendData}>
+        Save
+      </button>
     </form>
   );
 };

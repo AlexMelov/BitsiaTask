@@ -6,3 +6,45 @@
     margin: 1rem 0;
   }
 }
+
+.lines {
+  display: flex;
+  align-items: center;
+  & input {
+    height: 2vh;
+  }
+  & button {
+    height: 3vh;
+    width: 25px;
+    margin-left: 15px;
+  }
+}
+.linesTitles {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 5rem;
+  & p:nth-child(4) {
+    margin-left: 6rem;
+  }
+  & p:nth-child(5) {
+    margin-left: 0rem;
+  }
+}
+
+.tableDiv {
+  & td {
+    margin: 0 10px;
+  }
+  & td:nth-child(4) input,
+  & td:nth-child(5) input,
+  & td:nth-child(6) input {
+    width: 45px;
+  }
+  & td:nth-child(4),
+  & td:nth-child(5),
+  & td:nth-child(6),
+  & td:nth-child(7),
+  & td:nth-child(8) {
+    padding-left: 2rem;
+  }
+}
