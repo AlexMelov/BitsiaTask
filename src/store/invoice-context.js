@@ -2,10 +2,9 @@ import React, { useState } from "react";
 
 const AuthContext = React.createContext({
   invoiceArr: [],
-  onSave: (name, desc, quant, price) => {},
+  onSave: (name, desc, quant, price, id) => {},
   sendData: () => {},
 });
-
 export const AuthContextProvider = (props) => {
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
@@ -15,12 +14,15 @@ export const AuthContextProvider = (props) => {
   const [invoiceArr, setInvoiceArr] = useState([]);
 
   const saveInvoiceHandler = (name, desc, quant, price, id) => {
-    setNewName(name);
-    setNewDesc(desc);
-    setNewQuant(quant);
-    setNewPrice(price);
-    setNewId(id);
+    if (name || desc || quant || price || id) {
+      setNewName(name);
+      setNewDesc(desc);
+      setNewQuant(quant);
+      setNewPrice(price);
+      setNewId(id);
+    }
   };
+
   const sendDataHandler = () => {
     const data = {
       name: newName,
@@ -30,9 +32,7 @@ export const AuthContextProvider = (props) => {
       id: newId,
     };
     setInvoiceArr([...invoiceArr, data]);
-    console.log(invoiceArr);
   };
-
   return (
     <AuthContext.Provider
       value={{

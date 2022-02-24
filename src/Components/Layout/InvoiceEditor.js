@@ -6,13 +6,10 @@ import classes from "./invoiceEditor.module.scss";
 const InvoiceEditor = (props) => {
   const ctx = useContext(AuthContext);
   let arr = ctx.invoiceArr;
-  console.log(arr);
 
   const deleteHandler = (id) => {
-    const filtered = arr.filter((item) =>
-      +item.id !== +id ? console.log(id) : null
-    );
-    console.log(filtered);
+    const filtered = arr.filter((item) => (+item.id !== +id ? item : null));
+    ctx.invoiceArr = filtered;
   };
 
   const reducedNet = ctx.invoiceArr.reduce((prev, next) => {
@@ -26,10 +23,11 @@ const InvoiceEditor = (props) => {
     <div className={classes.container}>
       <h4>InvoiceEditor</h4>
       <h5>Invoices</h5>
-      {ctx.invoiceArr.map(({ name, price }, idx) => (
+      {ctx.invoiceArr.map(({ name, price, quant }, idx) => (
         <InvoiceItem
           key={idx}
           id={idx}
+          amount={quant}
           name={name}
           price={price}
           deleteHandler={() => deleteHandler(idx)}

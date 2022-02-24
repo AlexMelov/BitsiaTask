@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import AuthContext from "../../store/invoice-context";
 
 const InvoiceLine = (props) => {
   const [name, setName] = useState("");
@@ -6,6 +7,7 @@ const InvoiceLine = (props) => {
   const [id, setId] = useState("");
   const [quant, setQuant] = useState(null);
   const [price, setPrice] = useState(null);
+  const ctx = useContext(AuthContext);
 
   const nameHandler = (e) => {
     setName(e.target.value);
@@ -21,8 +23,7 @@ const InvoiceLine = (props) => {
     setPrice(e.target.value);
   };
 
-  props.onSave(name, desc, quant, price, id);
-
+  ctx.onSave(name, desc, quant, price, id);
   return (
     <>
       <tbody>
@@ -43,7 +44,7 @@ const InvoiceLine = (props) => {
             <input type="number" onChange={priceHandler} />
           </td>
           <td>
-            <p>Sum</p>
+            <p>{(+price * +quant) / 100}</p>
           </td>
           <td></td>
           <td>

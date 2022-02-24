@@ -7,7 +7,7 @@ const InvoiceItem = (props) => {
   return (
     <div className={classes.container}>
       <h3>{props.name}</h3>
-      <p>{props.price}</p>
+      <p>{(+props.price * +props.amount) / 100}</p>
       <button onClick={deleteHandler}>Trash </button>
     </div>
   );

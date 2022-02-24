@@ -4,6 +4,7 @@ import InvoiceLine from "../UI/InvoiceLine";
 import classes from "./GeneralData.module.scss";
 
 const GeneralData = () => {
+  const ctx = useContext(AuthContext);
   const [count, setCount] = useState([]);
   const [num, setNum] = useState(0);
 
@@ -18,8 +19,6 @@ const GeneralData = () => {
   const removeHandler = (e) => {
     e.target.parentElement.parentElement.remove();
   };
-
-  const ctx = useContext(AuthContext);
 
   return (
     <form onSubmit={submitHandler}>
@@ -71,7 +70,6 @@ const GeneralData = () => {
               id={idx}
               tableDiv={classes.tableDiv}
               removeHandler={removeHandler}
-              onSave={ctx.onSave}
             />
           ))}
         </table>
