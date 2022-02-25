@@ -125,6 +125,7 @@ const FormComponent = () => {
     e.preventDefault();
     ctx.postHandler();
     console.log(allState);
+    ctx.formObjHandler(allState);
     dispatchState(initialState);
   };
 

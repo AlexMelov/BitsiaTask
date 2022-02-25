@@ -9,6 +9,7 @@ const AuthContext = React.createContext({
   addNewObj: () => {},
   invLineArr: [],
   reducedSum: 0,
+  formObjHandler: () => {},
 });
 export const AuthContextProvider = (props) => {
   const [invoiceArr, setInvoiceArr] = useState([]);
@@ -16,6 +17,7 @@ export const AuthContextProvider = (props) => {
   const [invLineArr, setInvLineArr] = useState([]);
   const [reducedArray, setReducedArray] = useState([]);
   const [reducedSum, setReducedSum] = useState(0);
+  const [formObj, setFormObj] = useState({});
 
   let objIn = {};
   let objBack = {};
@@ -66,6 +68,11 @@ export const AuthContextProvider = (props) => {
       setInvLineArr([...invLineArr]);
     }
   };
+  const formObjHandler = (obj) => {
+    console.log(obj);
+    setFormObj({ ...obj, invoiceLine: [...reducedArray, objBack] });
+    console.log(formObj);
+  };
 
   return (
     <AuthContext.Provider
@@ -77,6 +84,7 @@ export const AuthContextProvider = (props) => {
         addNewObj,
         invLineArr,
         reducedSum,
+        formObjHandler,
       }}
     >
       {props.children}
