@@ -26,12 +26,13 @@ export const AuthContextProvider = (props) => {
   };
 
   const postHandler = () => {
+    setReducedArray([...reducedArray, objBack]);
+    const redSum = reducedArray.reduce((prev, next) => {
+      return +prev + next.sum;
+    }, 0);
+    setReducedSum(redSum);
+
     if (objIn.name && objIn.desc && objIn.value && objIn.price && objIn.sum) {
-      setReducedArray([...reducedArray, objBack]);
-      const redSum = reducedArray.reduce((prev, next) => {
-        return +prev + next.sum;
-      }, 0);
-      setReducedSum(redSum);
       setInvPart([...invPart, objIn]);
       setInvoiceArr([...invoiceArr, objIn]);
     } else {
