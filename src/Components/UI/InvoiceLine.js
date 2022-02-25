@@ -1,58 +1,83 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useReducer } from "react";
 import AuthContext from "../../store/invoice-context";
+import classes from "./InvoiceLine.module.scss";
 
 const InvoiceLine = (props) => {
-  const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
-  const [id, setId] = useState("");
-  const [quant, setQuant] = useState(null);
-  const [price, setPrice] = useState(null);
   const ctx = useContext(AuthContext);
 
-  const nameHandler = (e) => {
-    setName(e.target.value);
-    setId(props.id);
-  };
-  const descHandler = (e) => {
-    setDesc(e.target.value);
-  };
-  const quantHandler = (e) => {
-    setQuant(e.target.value);
-  };
-  const priceHandler = (e) => {
-    setPrice(e.target.value);
+  const initialState = {
+    name: "",
+    desc: "",
+    value: 0,
+    price: 0,
   };
 
-  ctx.onSave(name, desc, quant, price, id);
+  const reducerHandler = (state, action) => {
+    if (action.type === "NAME") {
+      return {
+        ...state,
+        name: action.name,
+      };
+    }
+    if (action.type === "DESC") {
+      return {
+        ...state,
+        desc: action.desc,
+      };
+    }
+    if (action.type === "VALUE") {
+      return {
+        ...state,
+        value: action.value,
+      };
+    }
+    if (action.type === "PRICE") {
+      return {
+        ...state,
+        price: action.price,
+      };
+    }
+    return initialState;
+  };
+  const [allState, dispatchState] = useReducer(reducerHandler, initialState);
+
+  const nameHandler = (e) => {
+    dispatchState({ type: "NAME", name: e.target.value });
+    console.log(e.target.value);
+  };
+  const descrHandler = (e) => {
+    dispatchState({ type: "DESC", desc: e.target.value });
+  };
+
+  const quantityHandler = (e) => {
+    dispatchState({ type: "VALUE", value: e.target.value });
+  };
+  const priceHandler = (e) => {
+    dispatchState({ type: "PRICE", price: e.target.value });
+    console.log(allState);
+  };
+
+  let sum = (+allState.price * +allState.value) / 100;
+
+  const obj = {
+    ...allState,
+    sum: sum,
+  };
+  ctx.itemObj(obj);
+
   return (
-    <>
-      <tbody>
-        <tr>
-          <td>
-            <p>Num</p>
-          </td>
-          <td>
-            <input type="text" onChange={nameHandler} />
-          </td>
-          <td>
-            <input type="text" onChange={descHandler} />
-          </td>
-          <td>
-            <input type="number" onChange={quantHandler} />
-          </td>
-          <td>
-            <input type="number" onChange={priceHandler} />
-          </td>
-          <td>
-            <p>{(+price * +quant) / 100}</p>
-          </td>
-          <td></td>
-          <td>
-            <button onClick={props.removeHandler}>-</button>
-          </td>
-        </tr>
-      </tbody>
-    </>
+    <div className={classes.inputs}>
+      <p>Num</p>
+      <input type="text" value={allState.name} onChange={nameHandler} />
+      <input type="text" value={allState.desc} onChange={descrHandler} />
+      <input type="number" value={allState.value} onChange={quantityHandler} />
+      <div className={classes.unitPrice}>
+        <input type="number" value={allState.price} onChange={priceHandler} />
+        <span>Cents</span>
+      </div>
+      <p>{sum}</p>
+      <button onClick={props.removeHandler}>-</button>
+    </div>
   );
 };
 

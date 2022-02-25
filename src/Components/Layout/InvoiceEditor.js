@@ -5,45 +5,41 @@ import classes from "./invoiceEditor.module.scss";
 
 const InvoiceEditor = (props) => {
   const ctx = useContext(AuthContext);
-  let arr = ctx.invoiceArr;
 
-  const deleteHandler = (id) => {
-    const filtered = arr.filter((item) => (+item.id !== +id ? item : null));
-    ctx.filteredArr(filtered);
-  };
+  const redSum = ctx.invoiceArr.map(
+    (item) => (item.price * item.quantity) / 100
+  );
 
-  const reducedNet = ctx.invoiceArr.reduce((prev, next) => {
-    return +prev + +next.sum;
-  }, 0);
-
-  const atSt = (reducedNet * 19) / 100;
-  const gross = +reducedNet + +atSt;
+  const netPrice = redSum.reduce((prev, next) => prev + next, 0);
+  const atSt = (netPrice * 19) / 100;
+  const gross = netPrice + atSt;
 
   return (
     <div className={classes.container}>
       <h4>InvoiceEditor</h4>
       <h5>Invoices</h5>
-      {ctx.invoiceArr.map(({ name, price, quant }, idx) => (
+
+      {ctx.invoiceArr.map(({ name, price, quantity, descr }, idx) => (
         <InvoiceItem
           key={idx}
-          id={idx}
-          amount={quant}
+          id={name}
+          descr={descr}
           name={name}
           price={price}
-          deleteHandler={() => deleteHandler(idx)}
+          quantity={quantity}
         />
       ))}
       <button className={classes.container__addBtn}>+</button>
       <div className={classes.allNet}>
-        <div>
+        <div className={classes.sum}>
           <p>Net</p>
-          <p>At.St. (19%)</p>
+          <p>At.St.(19%)</p>
           <p>Gross</p>
         </div>
-        <div>
-          <p>{reducedNet}</p>
-          <p>{atSt}</p>
-          <p>{gross}</p>
+        <div className={classes.sum}>
+          <p>{netPrice.toFixed(2)}</p>
+          <p>{atSt.toFixed(2)}</p>
+          <p>{gross.toFixed(2)}</p>
         </div>
       </div>
     </div>

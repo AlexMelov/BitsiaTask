@@ -1,5 +1,5 @@
 .container {
-  width: 20%;
+  min-width: 25%;
   border-right: 1px solid black;
   min-height: 90vh;
   padding: 2rem;
@@ -29,9 +29,18 @@
   }
 }
 .allNet {
+  display: flex;
+  align-items: center;
+  min-width: 100%;
   margin-top: 1rem;
   border-top: 1px solid black;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  & p {
+    white-space: nowrap;
+  }
+}
+.sum {
   align-items: center;
 }
