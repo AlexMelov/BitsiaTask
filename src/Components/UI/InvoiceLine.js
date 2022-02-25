@@ -43,18 +43,15 @@ const InvoiceLine = (props) => {
 
   const nameHandler = (e) => {
     dispatchState({ type: "NAME", name: e.target.value });
-    console.log(e.target.value);
   };
   const descrHandler = (e) => {
     dispatchState({ type: "DESC", desc: e.target.value });
   };
-
   const quantityHandler = (e) => {
     dispatchState({ type: "VALUE", value: e.target.value });
   };
   const priceHandler = (e) => {
     dispatchState({ type: "PRICE", price: e.target.value });
-    console.log(allState);
   };
 
   let sum = (+allState.price * +allState.value) / 100;

@@ -53,13 +53,25 @@ const FormComponent = () => {
         <p>Sum</p>
         <p></p>
       </div>
-      {ctx.addObj.map((item, idx) => (
+      {ctx.invLineArr.map((item, idx) => (
         <InvoiceLine removeHandler={removeHandler} key={idx} />
       ))}
       <button type="button" onClick={ctx.addNewObj}>
         +
       </button>
       <button type="submit">Save</button>
+      <div className={classes.allNet}>
+        <div className={classes.sum}>
+          <p>Net</p>
+          <p>At.St.(19%)</p>
+          <p>Gross</p>
+        </div>
+        <div className={classes.sum}>
+          <p>{"Net"}</p>
+          <p>{"ddv"}</p>
+          <p>{"Gross"}</p>
+        </div>
+      </div>
     </form>
   );
 };

@@ -27,11 +27,6 @@ p {
 .titles {
   display: flex;
   justify-content: space-between;
-  // display: grid;
-  // grid-template-columns: repeat(7, 1fr);
-  // justify-content: space-between;
-  // align-items: center;
-  // text-align: start;
   margin-left: 10px;
   & p:nth-of-type(4) {
     margin-left: 50px;
@@ -39,4 +34,20 @@ p {
   & p:nth-of-type(6) {
     margin-left: 30px;
   }
+}
+.allNet {
+  display: flex;
+  align-items: center;
+  min-width: 100%;
+  margin-top: 1rem;
+  border-top: 1px solid black;
+  justify-content: flex-end;
+
+  & p {
+    white-space: nowrap;
+  }
+}
+.sum {
+  align-items: center;
+  margin-left: 5rem;
 }

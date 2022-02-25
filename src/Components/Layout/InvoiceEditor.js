@@ -6,11 +6,10 @@ import classes from "./invoiceEditor.module.scss";
 const InvoiceEditor = (props) => {
   const ctx = useContext(AuthContext);
 
-  const redSum = ctx.invoiceArr.map(
-    (item) => (item.price * item.quantity) / 100
-  );
+  const redSum = ctx.invoiceArr.map((item) => (+item.price * item.value) / 100);
 
   const netPrice = redSum.reduce((prev, next) => prev + next, 0);
+
   const atSt = (netPrice * 19) / 100;
   const gross = netPrice + atSt;
 
@@ -19,14 +18,14 @@ const InvoiceEditor = (props) => {
       <h4>InvoiceEditor</h4>
       <h5>Invoices</h5>
 
-      {ctx.invoiceArr.map(({ name, price, quantity, descr }, idx) => (
+      {ctx.invoiceArr.map(({ name, price, value, desc }, idx) => (
         <InvoiceItem
           key={idx}
           id={name}
-          descr={descr}
+          desc={desc}
           name={name}
           price={price}
-          quantity={quantity}
+          quantity={value}
         />
       ))}
       <button className={classes.container__addBtn}>+</button>

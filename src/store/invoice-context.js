@@ -7,43 +7,62 @@ const AuthContext = React.createContext({
   postHandler: () => {},
   delHandler: () => {},
   addNewObj: () => {},
-  addObj: [],
+  invLineArr: [],
+  reducedSum: 0,
 });
 export const AuthContextProvider = (props) => {
   const [invoiceArr, setInvoiceArr] = useState([]);
   const [invPart, setInvPart] = useState([]);
-  const [addObj, setAddObj] = useState([]);
+  const [invLineArr, setInvLineArr] = useState([]);
+  const [reducedArray, setReducedArray] = useState([]);
+  const [reducedSum, setReducedSum] = useState(0);
 
   let objIn = {};
+  let objBack = {};
 
   const itemObj = (obj) => {
     objIn = obj;
-    console.log(objIn);
+    objBack = obj;
   };
 
   const postHandler = () => {
-    setInvPart([...invPart, objIn]);
-    setInvoiceArr([...invoiceArr, objIn]);
+    if (objIn.name && objIn.desc && objIn.value && objIn.price && objIn.sum) {
+      setReducedArray([...reducedArray, objBack]);
+      const redSum = reducedArray.reduce((prev, next) => {
+        return +prev + next.sum;
+      }, 0);
+      setReducedSum(redSum);
+      setInvPart([...invPart, objIn]);
+      setInvoiceArr([...invoiceArr, objIn]);
+    } else {
+      setReducedSum(0);
+    }
+    setInvLineArr([]);
   };
   const delHandler = (arr) => {
     setInvoiceArr(arr);
   };
   const addNewObj = () => {
-    setAddObj([objIn]);
-    //Plus BUTTON
+    setInvLineArr([objIn]);
 
-    console.log("Sucess");
+    if (objIn.name && objIn.desc && objIn.value && objIn.price && objIn.sum) {
+      setReducedArray([...reducedArray, objBack]);
+    }
+    const redSum = reducedArray.reduce((prev, next) => {
+      return +prev + +next.sum;
+    }, 0);
+    setReducedSum(redSum);
+
     if (
-      objIn.name !== "" ||
-      objIn.desc !== "" ||
-      objIn.value !== 0 ||
-      objIn.price !== 0 ||
+      objIn.name !== "" &&
+      objIn.desc !== "" &&
+      objIn.value !== 0 &&
+      objIn.price !== 0 &&
       objIn.sum !== 0
     ) {
-      console.log("Much bigger sucess");
-      setAddObj([...addObj, objIn]);
+      setInvLineArr([...invLineArr, objIn]);
     } else {
-      setAddObj([...addObj]);
+      setInvLineArr([...invLineArr]);
     }
   };
 
@@ -55,7 +74,8 @@ export const AuthContextProvider = (props) => {
         postHandler,
         delHandler,
         addNewObj,
-        addObj,
+        invLineArr,
+        reducedSum,
       }}
     >
       {props.children}
