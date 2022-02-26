@@ -60,7 +60,11 @@ const InvoiceLine = (props) => {
     ...allState,
     sum: sum,
   };
-  ctx.itemObj(obj);
+  const resetState = () => {
+    return dispatchState(initialState);
+  };
+
+  ctx.itemObj(obj, resetState);
 
   return (
     <div className={classes.inputs}>

@@ -123,11 +123,13 @@ const FormComponent = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    ctx.postHandler();
-    console.log(allState);
-    ctx.formObjHandler(allState);
     dispatchState(initialState);
+    ctx.postHandler();
+    ctx.formObjHandler(allState);
   };
+  const redSumNet = ctx.invLineArr.reduce((prev, next) => {
+    return +prev + +next.sum;
+  }, 0);
 
   return (
     <form onSubmit={submitHandler}>
@@ -208,7 +210,7 @@ const FormComponent = () => {
           <p>Gross</p>
         </div>
         <div className={classes.sum}>
-          <p>{ctx.reducedSum}</p>
+          <p>{redSumNet}</p>
           <p>{"ddv"}</p>
           <p>{"Gross"}</p>
         </div>
