@@ -5,6 +5,7 @@ import classes from "./Form.module.scss";
 
 const FormComponent = () => {
   const ctx = useContext(AuthContext);
+
   //
 
   const initialState = {
@@ -123,13 +124,19 @@ const FormComponent = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatchState(initialState);
     ctx.postHandler();
     ctx.formObjHandler(allState);
+    dispatchState(initialState);
   };
   const redSumNet = ctx.invLineArr.reduce((prev, next) => {
     return +prev + +next.sum;
   }, 0);
+
+  // const netSum = ctx.reducedSumHandler(redSumNet);
+  // console.log(netSum, "From Form Comp");
+  const atSt = (+redSumNet * 19) / 100;
+
+  const gross = +redSumNet + +atSt;
 
   return (
     <form onSubmit={submitHandler}>
@@ -164,7 +171,7 @@ const FormComponent = () => {
           onChange={locationHandler}
         />
       </div>
-      <h2>Invoice Data</h2>
+      <h3>Invoice Data</h3>
       <div className={classes.generalData}>
         <label htmlFor="invoiceNo">Invoice no.</label>
         <input
@@ -187,32 +194,48 @@ const FormComponent = () => {
           onChange={dueDateHandler}
         />
       </div>
-      <div className={classes.titles}>
-        <p>Pos.</p>
-        <p>Name.</p>
-        <p>Description</p>
-        <p>Quantity</p>
-        <p>Unit Price</p>
-        <p>Sum</p>
-        <p></p>
+      <h3>Invoice Line</h3>
+      <div className={classes.invLine}>
+        <div className={classes.titles}>
+          <p>Pos.</p>
+          <p>Name.</p>
+          <p>Description</p>
+          <p>Quantity</p>
+          <p>Unit Price</p>
+          <p>Sum</p>
+          <p></p>
+        </div>
+
+        {ctx.invLineArr ? (
+          ctx.invLineArr.map((item, idx) => (
+            <InvoiceLine removeHandler={removeHandler} key={idx} number={idx} />
+          ))
+        ) : (
+          <InvoiceLine removeHandler={removeHandler} key={0} number={0} />
+        )}
       </div>
-      {ctx.invLineArr.map((item, idx) => (
-        <InvoiceLine removeHandler={removeHandler} key={idx} />
-      ))}
-      <button type="button" onClick={ctx.addNewObj}>
-        +
-      </button>
-      <button type="submit">Save</button>
+      <div className={classes.buttons}>
+        <button
+          className={classes.addItemBtn}
+          type="button"
+          onClick={ctx.addNewObj}
+        >
+          +
+        </button>
+        <button className={classes.submitBtn} type="submit">
+          Save
+        </button>
+      </div>
       <div className={classes.allNet}>
         <div className={classes.sum}>
           <p>Net</p>
-          <p>At.St.(19%)</p>
+          <p>At.-St.(19%)</p>
           <p>Gross</p>
         </div>
         <div className={classes.sum}>
           <p>{redSumNet}</p>
-          <p>{"ddv"}</p>
-          <p>{"Gross"}</p>
+          <p>{atSt}</p>
+          <p>{gross}</p>
         </div>
       </div>
     </form>

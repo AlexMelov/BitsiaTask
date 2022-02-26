@@ -60,6 +60,7 @@ const InvoiceLine = (props) => {
     ...allState,
     sum: sum,
   };
+
   const resetState = () => {
     return dispatchState(initialState);
   };
@@ -68,7 +69,7 @@ const InvoiceLine = (props) => {
 
   return (
     <div className={classes.inputs}>
-      <p>Num</p>
+      <p>{props.number + 1}</p>
       <input type="text" value={allState.name} onChange={nameHandler} />
       <input type="text" value={allState.desc} onChange={descrHandler} />
       <input type="number" value={allState.value} onChange={quantityHandler} />
@@ -76,8 +77,18 @@ const InvoiceLine = (props) => {
         <input type="number" value={allState.price} onChange={priceHandler} />
         <span>Cents</span>
       </div>
-      <p>{sum}</p>
-      <button onClick={props.removeHandler}>-</button>
+      <p className={classes.sumPara}>{sum}</p>
+      <button className={classes.trashBtn} onClick={props.removeHandler}>
+        <svg
+          className={classes.svgTrash}
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
+        </svg>
+      </button>
     </div>
   );
 };

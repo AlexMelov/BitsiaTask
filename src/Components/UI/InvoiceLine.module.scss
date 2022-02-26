@@ -1,18 +1,19 @@
 .inputs {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(7, 120px);
+  justify-items: start;
   align-items: center;
+  text-align: start;
   & input,
   & button {
     height: 20px;
   }
+  & input {
+    width: 80%;
+  }
 
   & input:nth-of-type(3) {
-    width: 50px;
-    margin-left: 30px;
-  }
-  & p {
-    width: 50px;
+    width: 90px;
   }
 }
 .unitPrice {
@@ -20,10 +21,32 @@
   justify-content: space-between;
   align-items: center;
   & input {
-    width: 50px;
+    width: 70px;
     margin-left: 30px;
   }
-  & span {
-    margin-right: 50px;
+  & p {
+    margin-left: 50px;
   }
+}
+
+.trashBtn {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
+.svgTrash {
+  filter: invert(32%) sepia(43%) saturate(1352%) hue-rotate(180deg)
+    brightness(119%) contrast(119%);
+}
+
+.sumPara {
+  margin-left: 50px;
 }

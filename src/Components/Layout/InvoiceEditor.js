@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import AuthContext from "../../store/invoice-context";
 import InvoiceItem from "../UI/InvoiceItem";
 import classes from "./invoiceEditor.module.scss";
@@ -6,26 +6,24 @@ import classes from "./invoiceEditor.module.scss";
 const InvoiceEditor = (props) => {
   const ctx = useContext(AuthContext);
 
-  const redSum = ctx.invoiceArr.map((item) => (+item.price * item.value) / 100);
+  const allNet = ctx.formObj.reduce((prev, next) => {
+    return +prev + +next.sum;
+  }, 0);
 
-  const netPrice = redSum.reduce((prev, next) => prev + next, 0);
-
-  const atSt = (netPrice * 19) / 100;
-  const gross = netPrice + atSt;
+  const atSt = (+allNet * 19) / 100;
+  const gross = +allNet + +atSt;
 
   return (
     <div className={classes.container}>
       <h4>InvoiceEditor</h4>
       <h5>Invoices</h5>
 
-      {ctx.invoiceArr.map(({ name, price, value, desc }, idx) => (
+      {ctx.invoiceArr.map(({ name, custoremrNo }, idx) => (
         <InvoiceItem
           key={idx}
           id={name}
-          desc={desc}
           name={name}
-          price={price}
-          quantity={value}
+          custoremrNo={custoremrNo}
         />
       ))}
       <button className={classes.container__addBtn}>+</button>
@@ -36,7 +34,7 @@ const InvoiceEditor = (props) => {
           <p>Gross</p>
         </div>
         <div className={classes.sum}>
-          <p>{netPrice.toFixed(2)}</p>
+          <p>{allNet.toFixed(2)}</p>
           <p>{atSt.toFixed(2)}</p>
           <p>{gross.toFixed(2)}</p>
         </div>

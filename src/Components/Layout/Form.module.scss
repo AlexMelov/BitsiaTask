@@ -6,42 +6,45 @@
     margin: 1rem 0;
   }
 }
-
-.lines {
-  display: flex;
-  align-items: center;
-  & input {
-    height: 2vh;
+form {
+  width: 100%;
+  padding: 0 2rem;
+  background-color: rgb(230, 230, 236);
+  & h2,
+  & h3 {
+    text-align: left;
+    color: rgb(72, 93, 107);
   }
-  & button {
-    height: 3vh;
-    width: 25px;
-    margin-left: 15px;
+  & input {
+    background-color: ghostwhite;
+    border: none;
+    border-radius: 3px;
+    outline: none;
   }
 }
 
-p {
-  // display: inline-block;
-  width: 10%;
+.invLine {
+  display: flex;
+  flex-direction: column;
 }
 .titles {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 10px;
-  & p:nth-of-type(4) {
-    margin-left: 50px;
+  display: grid;
+  grid-template-columns: repeat(6, 120px);
+  // justify-content: flex-start;
+  text-align: start;
+  & p:nth-child(5) {
+    margin-left: 30px;
   }
-  & p:nth-of-type(6) {
+  & p:nth-child(6) {
     margin-left: 30px;
   }
 }
 .allNet {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  min-width: 100%;
   margin-top: 1rem;
   border-top: 1px solid black;
-  justify-content: flex-end;
 
   & p {
     white-space: nowrap;
@@ -50,4 +53,50 @@ p {
 .sum {
   align-items: center;
   margin-left: 5rem;
+}
+
+.submitBtn {
+  background-color: royalblue;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+}
+.addItemBtn {
+  background-color: royalblue;
+  color: white;
+  border-radius: 50%;
+  outline: none;
+  border: none;
+  font-size: 1.5rem;
+  width: 30px;
+  height: 30px;
+
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  left: 25%;
+  bottom: 10%;
+  & button:first-of-type {
+    position: fixed;
+    left: 27.5%;
+    bottom: 20%;
+  }
 }

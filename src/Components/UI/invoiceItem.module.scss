@@ -3,3 +3,21 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.trashBtn {
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
+.svgTrash {
+  filter: invert(32%) sepia(43%) saturate(1352%) hue-rotate(180deg)
+    brightness(119%) contrast(119%);
+}

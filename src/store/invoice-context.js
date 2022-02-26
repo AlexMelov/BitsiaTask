@@ -10,14 +10,16 @@ const AuthContext = React.createContext({
   invLineArr: [],
   reducedSum: 0,
   formObjHandler: () => {},
+  formObj: [],
 });
+
 export const AuthContextProvider = (props) => {
   const [invoiceArr, setInvoiceArr] = useState([]);
   const [invPart, setInvPart] = useState([]);
   const [invLineArr, setInvLineArr] = useState([{ price: 0, sum: 0 }]);
   const [reducedArray, setReducedArray] = useState([]);
   const [reducedSum, setReducedSum] = useState(0);
-  const [formObj, setFormObj] = useState({});
+  const [formObj, setFormObj] = useState([]);
 
   let objIn = {};
   let objBack = {};
@@ -30,9 +32,9 @@ export const AuthContextProvider = (props) => {
   };
 
   const postHandler = () => {
-    setInvLineArr([{ price: 0, sum: 0 }]);
-    resetAllFunc();
-    setReducedArray([...reducedArray, objBack]);
+    setReducedArray([]);
+    setFormObj([]);
+    setReducedArray([]);
     const redSum = reducedArray.reduce((prev, next) => {
       return +prev + next.sum;
     }, 0);
@@ -44,11 +46,15 @@ export const AuthContextProvider = (props) => {
     } else {
       setReducedSum(0);
     }
+    setInvLineArr([...invLineArr, objBack]);
     setInvLineArr([{ price: 0, sum: 0 }]);
+    resetAllFunc();
   };
+
   const delHandler = (arr) => {
     setInvoiceArr(arr);
   };
+
   const addNewObj = () => {
     setInvLineArr([objIn]);
 
@@ -73,8 +79,12 @@ export const AuthContextProvider = (props) => {
     }
   };
   const formObjHandler = (obj) => {
-    setFormObj({ ...obj, invoiceLine: [...reducedArray, objBack] });
-    console.log(formObj, "From Context");
+    setFormObj([...reducedArray, objBack]);
+    // setFormObj({ ...obj, invoiceLine: [...reducedArray, objBack] });
+    setInvoiceArr([
+      ...invoiceArr,
+      { ...obj, invoiceLine: [...reducedArray, objBack] },
+    ]);
   };
 
   return (
@@ -88,6 +98,7 @@ export const AuthContextProvider = (props) => {
         invLineArr,
         reducedSum,
         formObjHandler,
+        formObj,
       }}
     >
       {props.children}
