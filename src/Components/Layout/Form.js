@@ -206,13 +206,10 @@ const FormComponent = () => {
           <p></p>
         </div>
 
-        {ctx.invLineArr ? (
+        {ctx.invLineArr.length > 0 &&
           ctx.invLineArr.map((item, idx) => (
             <InvoiceLine removeHandler={removeHandler} key={idx} number={idx} />
-          ))
-        ) : (
-          <InvoiceLine removeHandler={removeHandler} key={0} number={0} />
-        )}
+          ))}
       </div>
       <div className={classes.buttons}>
         <button

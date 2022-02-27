@@ -5,10 +5,7 @@ import classes from "./invoiceItem.module.scss";
 const InvoiceItem = (props) => {
   const ctx = useContext(AuthContext);
 
-  const allNet = ctx.formObj.reduce((prev, next) => {
-    return +prev + +next.sum;
-  }, 0);
-
+  const allNet = ctx.formObj[0].sum;
   const deleteHandler = (e) => {
     const filterDel = ctx.invoiceArr.filter((item) =>
       item.name !== props.id && item.customerNo !== props.customerNo
@@ -21,7 +18,7 @@ const InvoiceItem = (props) => {
   return (
     <div className={classes.container}>
       <h3>{props.name}</h3>
-      <p>{allNet}€</p>
+      <p>{props.reducedSum}€</p>
       <button className={classes.trashBtn} onClick={deleteHandler}>
         <svg
           className={classes.svgTrash}

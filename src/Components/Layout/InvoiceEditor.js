@@ -6,9 +6,10 @@ import classes from "./invoiceEditor.module.scss";
 const InvoiceEditor = (props) => {
   const ctx = useContext(AuthContext);
 
-  const allNet = ctx.formObj.reduce((prev, next) => {
-    return +prev + +next.sum;
+  const allNet = ctx.invoiceArr.reduce((prev, next) => {
+    return +prev + +next.reducedSum;
   }, 0);
+  console.log(allNet);
 
   const atSt = (+allNet * 19) / 100;
   const gross = +allNet + +atSt;
@@ -18,12 +19,13 @@ const InvoiceEditor = (props) => {
       <h4>InvoiceEditor</h4>
       <h5>Invoices</h5>
 
-      {ctx.invoiceArr.map(({ name, custoremrNo }, idx) => (
+      {ctx.invoiceArr.map(({ name, custoremrNo, reducedSum }, idx) => (
         <InvoiceItem
           key={idx}
           id={name}
           name={name}
           custoremrNo={custoremrNo}
+          reducedSum={reducedSum}
         />
       ))}
       <button className={classes.container__addBtn}>+</button>

@@ -33,8 +33,6 @@ export const AuthContextProvider = (props) => {
 
   const postHandler = () => {
     setReducedArray([]);
-    setFormObj([]);
-    setReducedArray([]);
     const redSum = reducedArray.reduce((prev, next) => {
       return +prev + next.sum;
     }, 0);
@@ -49,6 +47,7 @@ export const AuthContextProvider = (props) => {
     setInvLineArr([...invLineArr, objBack]);
     setInvLineArr([{ price: 0, sum: 0 }]);
     resetAllFunc();
+    setFormObj([]);
   };
 
   const delHandler = (arr) => {
@@ -75,15 +74,23 @@ export const AuthContextProvider = (props) => {
     ) {
       setInvLineArr([...invLineArr, objIn]);
     } else {
-      setInvLineArr([...invLineArr]);
+      // setInvLineArr([...invLineArr]);
+      return;
     }
   };
   const formObjHandler = (obj) => {
     setFormObj([...reducedArray, objBack]);
-    // setFormObj({ ...obj, invoiceLine: [...reducedArray, objBack] });
+    const reduceAllPrices = formObj.reduce((prev, next) => {
+      return +prev + +next.sum;
+    }, 0);
+
     setInvoiceArr([
       ...invoiceArr,
-      { ...obj, invoiceLine: [...reducedArray, objBack] },
+      {
+        ...obj,
+        reducedSum: +reduceAllPrices,
+        invoiceLine: [...reducedArray, objBack],
+      },
     ]);
   };
 
