@@ -7,7 +7,6 @@ import "./form.scss";
 const FormComponent = () => {
   const ctx = useContext(AuthContext);
   const [product, setProduct] = useState([]);
-  const [counterId, setCounterId] = useState(0);
 
   //
 
@@ -179,9 +178,8 @@ const FormComponent = () => {
     e.preventDefault();
     const itemId = e.target.parentElement.parentElement.closest("li");
     const removeProductItem = product.filter((item) =>
-      +item.id + 1 !== +itemId.id ? item : false
+      item.id !== itemId.id ? item : false
     );
-
     setProduct(removeProductItem);
   };
 
@@ -191,14 +189,18 @@ const FormComponent = () => {
     dispatchState(initialState);
     dispatchProdState(initialStateForProducts);
     setProduct([]);
-    setCounterId(0);
   };
   const addNewItem = () => {
-    setCounterId(counterId + 1);
-    setProduct([...product, obj]);
-    dispatchProdState(initialStateForProducts);
-    // ctx.addNewObj(prodObj);
-    console.log(product);
+    if (
+      obj.prodName !== "" &&
+      obj.desc !== "" &&
+      obj.value !== 0 &&
+      obj.price !== 0
+    ) {
+      setProduct([...product, obj]);
+      dispatchProdState(initialStateForProducts);
+      // ctx.addNewObj(prodObj);
+    }
   };
 
   const sumPrice = (+productState.value * +productState.price) / 100;
@@ -206,8 +208,9 @@ const FormComponent = () => {
   const obj = {
     ...productState,
     sum: sumPrice,
-    id: counterId,
+    id: productState.prodName + productState.price,
   };
+
   // ctx.itemObj(obj);
 
   const productReducedSum = product.reduce((prev, next) => {
@@ -334,8 +337,8 @@ const FormComponent = () => {
           <ul className={"productItems"}>
             {product.map((item, idx) => {
               return (
-                <li key={idx} id={counterId}>
-                  <p>{idx + 1}</p>
+                <li key={idx} id={item.prodName + item.price}>
+                  <p>{idx}</p>
                   <p>{item.prodName}</p> <p>{item.desc}</p> <p>{item.value}</p>
                   <p>{item.price}</p>
                   <p>Edit</p>
