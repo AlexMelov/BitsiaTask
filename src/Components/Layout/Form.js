@@ -24,68 +24,60 @@ const FormComponent = () => {
   };
 
   const reducerHandler = (state, action) => {
-    if (action.type === "CUSTOMER_NO") {
-      return {
-        ...state,
-        customerNo: action.customerNo,
-      };
+    switch (action.type) {
+      case "CUSTOMER_NO":
+        return {
+          ...state,
+          customerNo: action.customerNo,
+        };
+      case "ADDRESS":
+        return {
+          ...state,
+          address: action.address,
+        };
+      case "NAME":
+        return {
+          ...state,
+          name: action.name,
+        };
+      case "ZIP":
+        return {
+          ...state,
+          zip: action.zip,
+        };
+      case "LOCATION":
+        return {
+          ...state,
+          location: action.location,
+        };
+      case "CONTACT":
+        return {
+          ...state,
+          contact: action.contact,
+        };
+      case "INVOICE_NO":
+        return {
+          ...state,
+          invoiceNo: action.invoiceNo,
+        };
+      case "INVOICE_DATA":
+        return {
+          ...state,
+          invoiceData: action.invoiceData,
+        };
+      case "PERIOD":
+        return {
+          ...state,
+          period: action.period,
+        };
+      case "DUE_DATE":
+        return {
+          ...state,
+          dueDate: action.dueDate,
+        };
+      default:
+        return initialState;
     }
-    if (action.type === "ADDRESS") {
-      return {
-        ...state,
-        address: action.address,
-      };
-    }
-    if (action.type === "NAME") {
-      return {
-        ...state,
-        name: action.name,
-      };
-    }
-    if (action.type === "ZIP") {
-      return {
-        ...state,
-        zip: action.zip,
-      };
-    }
-    if (action.type === "LOCATION") {
-      return {
-        ...state,
-        location: action.location,
-      };
-    }
-    if (action.type === "CONTACT") {
-      return {
-        ...state,
-        contact: action.contact,
-      };
-    }
-    if (action.type === "INVOICE_NO") {
-      return {
-        ...state,
-        invoiceNo: action.invoiceNo,
-      };
-    }
-    if (action.type === "INVOICE_DATA") {
-      return {
-        ...state,
-        invoiceData: action.invoiceData,
-      };
-    }
-    if (action.type === "PERIOD") {
-      return {
-        ...state,
-        period: action.period,
-      };
-    }
-    if (action.type === "DUE_DATE") {
-      return {
-        ...state,
-        dueDate: action.dueDate,
-      };
-    }
-
-    return initialState;
   };
   const [allState, dispatchState] = useReducer(reducerHandler, initialState);
 
@@ -128,55 +120,50 @@ const FormComponent = () => {
   };
 
   const reducerProductHandler = (state, action) => {
-    if (action.type === "PROD_NAME") {
-      return {
-        ...state,
-        prodName: action.prodName,
-      };
+    switch (action.type) {
+      case "PROD_NAME":
+        return {
+          ...state,
+          prodName: action.prodName,
+        };
+      case "DESC":
+        return {
+          ...state,
+          desc: action.desc,
+        };
+      case "VALUE":
+        return {
+          ...state,
+          value: action.value,
+        };
+      case "PRICE":
+        return {
+          ...state,
+          price: action.price,
+        };
+      case "EDIT_NAME":
+        return {
+          ...state,
+          prodName: action.prodNameEdit,
+        };
+      case "EDIT_DESC":
+        return {
+          ...state,
+          desc: action.editDesc,
+        };
+      case "EDIT_QUANTITY":
+        return {
+          ...state,
+          value: action.editValue,
+        };
+      case "EDIT_PRICE":
+        return {
+          ...state,
+          price: action.editPrice,
+        };
+      default:
+        return initialStateForProducts;
     }
-    if (action.type === "DESC") {
-      return {
-        ...state,
-        desc: action.desc,
-      };
-    }
-    if (action.type === "VALUE") {
-      return {
-        ...state,
-        value: action.value,
-      };
-    }
-    if (action.type === "PRICE") {
-      return {
-        ...state,
-        price: action.price,
-      };
-    }
-    if (action.type === "EDIT_NAME") {
-      return {
-        ...state,
-        prodName: action.prodNameEdit,
-      };
-    }
-    if (action.type === "EDIT_DESC") {
-      return {
-        ...state,
-        desc: action.editDesc,
-      };
-    }
-    if (action.type === "EDIT_QUANTITY") {
-      return {
-        ...state,
-        value: action.editValue,
-      };
-    }
-    if (action.type === "EDIT_PRICE") {
-      return {
-        ...state,
-        price: action.editPrice,
-      };
-    }
-    return initialStateForProducts;
   };
   const [productState, dispatchProdState] = useReducer(
     reducerProductHandler,
@@ -370,6 +357,7 @@ const FormComponent = () => {
             className={classes.trashBtn}
             onClick={(e) => {
               e.preventDefault();
+              dispatchProdState(initialStateForProducts);
             }}
           >
             <svg
@@ -390,6 +378,7 @@ const FormComponent = () => {
                   <p>{idx + 1}</p>
                   <p>{item.prodName}</p> <p>{item.desc}</p> <p>{item.value}</p>
                   <p>{item.price}</p>
+                  <p>{item.sum}</p>
                   <p className={classes.editBtn} onClick={editHandler}>
                     Edit
                   </p>

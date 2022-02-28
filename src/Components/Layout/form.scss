@@ -5,7 +5,7 @@
   padding: 0;
   & li {
     display: grid;
-    grid-template-columns: repeat(7, 120px);
+    grid-template-columns: repeat(8, 120px);
     gap: 2px;
     & p:first-of-type {
       margin: 0.5rem 0;
@@ -48,9 +48,8 @@
     grid-template-columns: 400px;
     gap: 20px;
   }
-  & input,
-  & button {
-    height: 20px;
+  & input {
+    height: 25px;
   }
   & input {
     width: 80%;
