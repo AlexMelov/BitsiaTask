@@ -152,6 +152,30 @@ const FormComponent = () => {
         price: action.price,
       };
     }
+    if (action.type === "EDIT_NAME") {
+      return {
+        ...state,
+        prodName: action.prodNameEdit,
+      };
+    }
+    if (action.type === "EDIT_DESC") {
+      return {
+        ...state,
+        desc: action.editDesc,
+      };
+    }
+    if (action.type === "EDIT_QUANTITY") {
+      return {
+        ...state,
+        value: action.editValue,
+      };
+    }
+    if (action.type === "EDIT_PRICE") {
+      return {
+        ...state,
+        price: action.editPrice,
+      };
+    }
     return initialStateForProducts;
   };
   const [productState, dispatchProdState] = useReducer(
@@ -223,6 +247,31 @@ const FormComponent = () => {
   let invObjAll = { products: [...product], ...allState, productReducedSum };
   ctx.itemObj(invObjAll);
 
+  const editHandler = (e) => {
+    const objectId = e.target.parentElement.id;
+    const objForEdit = product.find((item) =>
+      item.id === objectId ? item : false
+    );
+    const filterProductArray = product.filter((item) => item !== objForEdit);
+
+    dispatchProdState({
+      type: "EDIT_NAME",
+      prodNameEdit: objForEdit.prodName,
+    });
+    dispatchProdState({
+      type: "EDIT_DESC",
+      editDesc: objForEdit.desc,
+    });
+    dispatchProdState({
+      type: "EDIT_QUANTITY",
+      editValue: objForEdit.value,
+    });
+    dispatchProdState({
+      type: "EDIT_PRICE",
+      editPrice: objForEdit.price,
+    });
+    setProduct(filterProductArray);
+  };
   // ctx function to send all obj
   return (
     <form onSubmit={submitHandler}>
@@ -338,10 +387,12 @@ const FormComponent = () => {
             {product.map((item, idx) => {
               return (
                 <li key={idx} id={item.prodName + item.price}>
-                  <p>{idx}</p>
+                  <p>{idx + 1}</p>
                   <p>{item.prodName}</p> <p>{item.desc}</p> <p>{item.value}</p>
                   <p>{item.price}</p>
-                  <p>Edit</p>
+                  <p className={classes.editBtn} onClick={editHandler}>
+                    Edit
+                  </p>
                   <button
                     className={classes.trashBtn}
                     onClick={removeListItemHandler}
