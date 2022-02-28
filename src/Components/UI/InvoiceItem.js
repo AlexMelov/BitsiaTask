@@ -6,11 +6,13 @@ const InvoiceItem = (props) => {
   const ctx = useContext(AuthContext);
 
   const deleteHandler = (e) => {
+    e.preventDefault();
     const filterDel = ctx.invoiceArr.filter((item) =>
       item.name !== props.id && item.customerNo !== props.customerNo
         ? item
         : null
     );
+
     ctx.delHandler(filterDel);
   };
 

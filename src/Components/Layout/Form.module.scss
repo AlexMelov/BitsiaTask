@@ -26,7 +26,7 @@ form {
 
 .invLine {
   display: flex;
-  
+
   flex-direction: column;
 }
 .titles {
@@ -151,6 +151,7 @@ form {
 .svgTrash {
   filter: invert(32%) sepia(43%) saturate(1352%) hue-rotate(180deg)
     brightness(119%) contrast(119%);
+  padding: 0.5rem;
 }
 
 .sumPara {
@@ -174,6 +175,5 @@ form {
       margin-right: 100px;
       margin-left: 0;
     }
-    
   }
 }

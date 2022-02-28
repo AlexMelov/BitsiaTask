@@ -7,6 +7,7 @@ import "./form.scss";
 const FormComponent = () => {
   const ctx = useContext(AuthContext);
   const [product, setProduct] = useState([]);
+  const [counterId, setCounterId] = useState(0);
 
   //
 
@@ -174,9 +175,14 @@ const FormComponent = () => {
 
   // Button Handlers
 
-  const removeHandler = (e) => {
+  const removeListItemHandler = (e) => {
     e.preventDefault();
-    e.target.parentElement.parentElement.remove();
+    const itemId = e.target.parentElement.parentElement.closest("li");
+    const removeProductItem = product.filter((item) =>
+      +item.id + 1 !== +itemId.id ? item : false
+    );
+
+    setProduct(removeProductItem);
   };
 
   const submitHandler = (e) => {
@@ -185,11 +191,14 @@ const FormComponent = () => {
     dispatchState(initialState);
     dispatchProdState(initialStateForProducts);
     setProduct([]);
+    setCounterId(0);
   };
   const addNewItem = () => {
+    setCounterId(counterId + 1);
     setProduct([...product, obj]);
     dispatchProdState(initialStateForProducts);
     // ctx.addNewObj(prodObj);
+    console.log(product);
   };
 
   const sumPrice = (+productState.value * +productState.price) / 100;
@@ -197,6 +206,7 @@ const FormComponent = () => {
   const obj = {
     ...productState,
     sum: sumPrice,
+    id: counterId,
   };
   // ctx.itemObj(obj);
 
@@ -207,8 +217,9 @@ const FormComponent = () => {
   const gross = +productReducedSum + +atSt;
   //
 
-  let invObjAll = { ...obj, ...allState, productReducedSum };
+  let invObjAll = { products: [...product], ...allState, productReducedSum };
   ctx.itemObj(invObjAll);
+
   // ctx function to send all obj
   return (
     <form onSubmit={submitHandler}>
@@ -278,7 +289,7 @@ const FormComponent = () => {
           <p></p>
         </div>
         <div className={"inputs"}>
-          <p>{1}</p>
+          <p>{0}</p>
           <input
             type="text"
             value={productState.prodName}
@@ -303,7 +314,12 @@ const FormComponent = () => {
             <span>Cents</span>
           </div>
           <p className={classes.sumPara}>{sumPrice} €</p>
-          <button className={classes.trashBtn} onClick={removeHandler}>
+          <button
+            className={classes.trashBtn}
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
             <svg
               className={classes.svgTrash}
               xmlns="http://www.w3.org/2000/svg"
@@ -314,15 +330,19 @@ const FormComponent = () => {
               <path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
             </svg>
           </button>
+
           <ul className={"productItems"}>
             {product.map((item, idx) => {
               return (
-                <li key={idx}>
-                  <p>{idx}</p>
+                <li key={idx} id={counterId}>
+                  <p>{idx + 1}</p>
                   <p>{item.prodName}</p> <p>{item.desc}</p> <p>{item.value}</p>
                   <p>{item.price}</p>
                   <p>Edit</p>
-                  <button className={classes.trashBtn} onClick={removeHandler}>
+                  <button
+                    className={classes.trashBtn}
+                    onClick={removeListItemHandler}
+                  >
                     <svg
                       className={classes.svgTrash}
                       xmlns="http://www.w3.org/2000/svg"

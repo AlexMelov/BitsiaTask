@@ -7,27 +7,25 @@ const AuthContext = React.createContext({
   postHandler: () => {},
   delHandler: () => {},
   // addNewObj: () => {},
-  invLineArr: [],
-  reducedSum: 0,
-  formObj: [],
+  // invLineArr: [],
+  // reducedSum: 0,
+  // formObj: [],
 });
 
 export const AuthContextProvider = (props) => {
   const [invoiceArr, setInvoiceArr] = useState([]);
-  const [invPart, setInvPart] = useState([]);
-  const [invLineArr, setInvLineArr] = useState([
-    { price: 0, sum: 0, value: 0 },
-  ]);
-  const [reducedArray, setReducedArray] = useState([]);
-  const [reducedSum, setReducedSum] = useState(0);
-  const [formObj, setFormObj] = useState([]);
+  // const [invPart, setInvPart] = useState([]);
+  // const [invLineArr, setInvLineArr] = useState([
+  //   { price: 0, sum: 0, value: 0 },
+  // ]);
+  // const [reducedArray, setReducedArray] = useState([]);
+  // const [reducedSum, setReducedSum] = useState(0);
+  // const [formObj, setFormObj] = useState([]);
 
   let objIn = {};
-  let objBack = {};
 
   const itemObj = (obj) => {
     objIn = obj;
-    objBack = obj;
   };
 
   const delHandler = (arr) => {
@@ -48,7 +46,6 @@ export const AuthContextProvider = (props) => {
 
   const postHandler = () => {
     setInvoiceArr([...invoiceArr, objIn]);
-    console.log(invoiceArr);
   };
 
   return (
@@ -59,9 +56,9 @@ export const AuthContextProvider = (props) => {
         postHandler,
         delHandler,
         // addNewObj,
-        invLineArr,
-        reducedSum,
-        formObj,
+        // invLineArr,
+        // reducedSum,
+        // formObj,
       }}
     >
       {props.children}
