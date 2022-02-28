@@ -5,7 +5,6 @@ import classes from "./invoiceItem.module.scss";
 const InvoiceItem = (props) => {
   const ctx = useContext(AuthContext);
 
-  const allNet = ctx.formObj[0].sum;
   const deleteHandler = (e) => {
     const filterDel = ctx.invoiceArr.filter((item) =>
       item.name !== props.id && item.customerNo !== props.customerNo

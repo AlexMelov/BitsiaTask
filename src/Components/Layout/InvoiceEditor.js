@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import AuthContext from "../../store/invoice-context";
 import InvoiceItem from "../UI/InvoiceItem";
 import classes from "./invoiceEditor.module.scss";
@@ -7,9 +7,8 @@ const InvoiceEditor = (props) => {
   const ctx = useContext(AuthContext);
 
   const allNet = ctx.invoiceArr.reduce((prev, next) => {
-    return +prev + +next.reducedSum;
+    return +prev + +next.productReducedSum;
   }, 0);
-  console.log(allNet);
 
   const atSt = (+allNet * 19) / 100;
   const gross = +allNet + +atSt;
@@ -19,15 +18,16 @@ const InvoiceEditor = (props) => {
       <h4>InvoiceEditor</h4>
       <h5>Invoices</h5>
 
-      {ctx.invoiceArr.map(({ name, custoremrNo, reducedSum }, idx) => (
-        <InvoiceItem
-          key={idx}
-          id={name}
-          name={name}
-          custoremrNo={custoremrNo}
-          reducedSum={reducedSum}
-        />
-      ))}
+      {ctx.invoiceArr &&
+        ctx.invoiceArr.map(({ name, custoremrNo, productReducedSum }, idx) => (
+          <InvoiceItem
+            key={idx}
+            id={name}
+            name={name}
+            custoremrNo={custoremrNo}
+            reducedSum={productReducedSum}
+          />
+        ))}
       <button className={classes.container__addBtn}>+</button>
       <div className={classes.allNet}>
         <div className={classes.sum}>

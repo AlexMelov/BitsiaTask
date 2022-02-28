@@ -60,12 +60,14 @@ const InvoiceLine = (props) => {
     ...allState,
     sum: sum,
   };
+  ctx.itemObj(obj);
+  props.getProductObj(allState);
 
   const resetState = () => {
     return dispatchState(initialState);
   };
 
-  ctx.itemObj(obj, resetState);
+  // ctx.itemObj(obj, resetState);
 
   return (
     <div className={classes.inputs}>

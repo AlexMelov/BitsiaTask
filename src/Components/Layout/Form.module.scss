@@ -1,3 +1,4 @@
+// @import './mixin';
 .generalData {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -25,11 +26,13 @@ form {
 
 .invLine {
   display: flex;
+  
   flex-direction: column;
 }
 .titles {
   display: grid;
   grid-template-columns: repeat(6, 120px);
+  height: 5vh;
   // justify-content: flex-start;
   text-align: start;
   & p:nth-child(5) {
@@ -98,5 +101,79 @@ form {
     position: fixed;
     left: 27.5%;
     bottom: 20%;
+  }
+}
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(7, 120px);
+  justify-items: start;
+  align-items: center;
+  text-align: start;
+  & input,
+  & button {
+    height: 20px;
+  }
+  & input {
+    width: 80%;
+  }
+
+  & input:nth-of-type(3) {
+    width: 90px;
+  }
+}
+.unitPrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & input {
+    width: 70px;
+    margin-left: 30px;
+  }
+  & p {
+    margin-left: 50px;
+  }
+}
+
+.trashBtn {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-left: 11px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
+.svgTrash {
+  filter: invert(32%) sepia(43%) saturate(1352%) hue-rotate(180deg)
+    brightness(119%) contrast(119%);
+}
+
+.sumPara {
+  margin-left: 50px;
+}
+
+.productList {
+  margin: 0;
+  padding: 0;
+  & li {
+    display: grid;
+    grid-template-columns: repeat(7, 120px);
+    gap: 2px;
+    & p:first-of-type {
+      margin: 0.5rem 0;
+    }
+    & p:nth-child(5) {
+      margin-left: 2rem;
+    }
+    & button {
+      margin-right: 100px;
+      margin-left: 0;
+    }
+    
   }
 }

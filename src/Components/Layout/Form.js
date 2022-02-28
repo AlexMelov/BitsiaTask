@@ -1,10 +1,12 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useReducer, useState } from "react";
 import AuthContext from "../../store/invoice-context";
-import InvoiceLine from "../UI/InvoiceLine";
+// import InvoiceLine from "../UI/InvoiceLine";
 import classes from "./Form.module.scss";
+import "./form.scss";
 
 const FormComponent = () => {
   const ctx = useContext(AuthContext);
+  const [product, setProduct] = useState([]);
 
   //
 
@@ -82,6 +84,7 @@ const FormComponent = () => {
         dueDate: action.dueDate,
       };
     }
+
     return initialState;
   };
   const [allState, dispatchState] = useReducer(reducerHandler, initialState);
@@ -117,27 +120,96 @@ const FormComponent = () => {
     dispatchState({ type: "DUE_DATE", dueDate: e.target.value });
   };
 
+  const initialStateForProducts = {
+    prodName: "",
+    desc: "",
+    value: 0,
+    price: 0,
+  };
+
+  const reducerProductHandler = (state, action) => {
+    if (action.type === "PROD_NAME") {
+      return {
+        ...state,
+        prodName: action.prodName,
+      };
+    }
+    if (action.type === "DESC") {
+      return {
+        ...state,
+        desc: action.desc,
+      };
+    }
+    if (action.type === "VALUE") {
+      return {
+        ...state,
+        value: action.value,
+      };
+    }
+    if (action.type === "PRICE") {
+      return {
+        ...state,
+        price: action.price,
+      };
+    }
+    return initialStateForProducts;
+  };
+  const [productState, dispatchProdState] = useReducer(
+    reducerProductHandler,
+    initialStateForProducts
+  );
+
+  const prodNameHandler = (e) => {
+    dispatchProdState({ type: "PROD_NAME", prodName: e.target.value });
+  };
+  const descrHandler = (e) => {
+    dispatchProdState({ type: "DESC", desc: e.target.value });
+  };
+  const quantityHandler = (e) => {
+    dispatchProdState({ type: "VALUE", value: e.target.value });
+  };
+  const priceHandler = (e) => {
+    dispatchProdState({ type: "PRICE", price: e.target.value });
+  };
+
+  // Button Handlers
+
   const removeHandler = (e) => {
     e.preventDefault();
-    console.log("Remove");
+    e.target.parentElement.parentElement.remove();
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
     ctx.postHandler();
-    ctx.formObjHandler(allState);
     dispatchState(initialState);
+    dispatchProdState(initialStateForProducts);
+    setProduct([]);
   };
-  const redSumNet = ctx.invLineArr.reduce((prev, next) => {
-    return +prev + +next.sum;
+  const addNewItem = () => {
+    setProduct([...product, obj]);
+    dispatchProdState(initialStateForProducts);
+    // ctx.addNewObj(prodObj);
+  };
+
+  const sumPrice = (+productState.value * +productState.price) / 100;
+
+  const obj = {
+    ...productState,
+    sum: sumPrice,
+  };
+  // ctx.itemObj(obj);
+
+  const productReducedSum = product.reduce((prev, next) => {
+    return prev + +next.sum;
   }, 0);
+  const atSt = (+productReducedSum * 19) / 100;
+  const gross = +productReducedSum + +atSt;
+  //
 
-  // const netSum = ctx.reducedSumHandler(redSumNet);
-  // console.log(netSum, "From Form Comp");
-  const atSt = (+redSumNet * 19) / 100;
-
-  const gross = +redSumNet + +atSt;
-
+  let invObjAll = { ...obj, ...allState, productReducedSum };
+  ctx.itemObj(invObjAll);
+  // ctx function to send all obj
   return (
     <form onSubmit={submitHandler}>
       <h3>General Data</h3>
@@ -196,7 +268,7 @@ const FormComponent = () => {
       </div>
       <h3>Invoice Line</h3>
       <div className={classes.invLine}>
-        <div className={classes.titles}>
+        <div className={"titles"}>
           <p>Pos.</p>
           <p>Name.</p>
           <p>Description</p>
@@ -205,17 +277,73 @@ const FormComponent = () => {
           <p>Sum</p>
           <p></p>
         </div>
-
-        {ctx.invLineArr.length > 0 &&
-          ctx.invLineArr.map((item, idx) => (
-            <InvoiceLine removeHandler={removeHandler} key={idx} number={idx} />
-          ))}
+        <div className={"inputs"}>
+          <p>{1}</p>
+          <input
+            type="text"
+            value={productState.prodName}
+            onChange={prodNameHandler}
+          />
+          <input
+            type="text"
+            value={productState.desc}
+            onChange={descrHandler}
+          />
+          <input
+            type="number"
+            value={productState.value}
+            onChange={quantityHandler}
+          />
+          <div className={classes.unitPrice}>
+            <input
+              type="number"
+              value={productState.price}
+              onChange={priceHandler}
+            />
+            <span>Cents</span>
+          </div>
+          <p className={classes.sumPara}>{sumPrice} €</p>
+          <button className={classes.trashBtn} onClick={removeHandler}>
+            <svg
+              className={classes.svgTrash}
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
+            </svg>
+          </button>
+          <ul className={"productItems"}>
+            {product.map((item, idx) => {
+              return (
+                <li key={idx}>
+                  <p>{idx}</p>
+                  <p>{item.prodName}</p> <p>{item.desc}</p> <p>{item.value}</p>
+                  <p>{item.price}</p>
+                  <p>Edit</p>
+                  <button className={classes.trashBtn} onClick={removeHandler}>
+                    <svg
+                      className={classes.svgTrash}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
+                    </svg>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
       <div className={classes.buttons}>
         <button
           className={classes.addItemBtn}
           type="button"
-          onClick={ctx.addNewObj}
+          onClick={addNewItem}
         >
           +
         </button>
@@ -230,9 +358,9 @@ const FormComponent = () => {
           <p>Gross</p>
         </div>
         <div className={classes.sum}>
-          <p>{redSumNet}</p>
-          <p>{atSt}</p>
-          <p>{gross}</p>
+          <p>{productReducedSum.toFixed(2)} €</p>
+          <p>{atSt.toFixed(2)} €</p>
+          <p>{gross.toFixed(2)} €</p>
         </div>
       </div>
     </form>
